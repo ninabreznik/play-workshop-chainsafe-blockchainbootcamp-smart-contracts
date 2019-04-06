@@ -115147,9 +115147,18 @@ var colors = {
   lavenderGrey: "#e3e8ee",
   androidGreen: "#9BC53D"
 }
+
+var font_url = (location.origin.includes('//localhost')
+  || location.origin.includes('//127.0.0.1')
+  || location.origin.includes('//0.0.0.0')
+  || location.origin.includes('//10.0.0')
+  || location.origin.includes('//192.168')) ?
+    '../src/OverpassMono-Regular.ttf'
+    : 'https://github.com/ethereum-play/play-workshop/blob/master/src/OverpassMono-Regular.ttf?raw=true'
+
 module.exports = workshopping.customize({
   theme: {
-    '--font': '../src/OverpassMono-Regular.ttf',
+    '--font': font_url,
     menu_minHeight: '0px',
     menu_height: 'auto',
     menu_border: '0',
@@ -115198,7 +115207,7 @@ module.exports = workshopping.customize({
   }
 })
 
-},{"workshopping":1121}],1117:[function(require,module,exports){
+},{"workshopping":1122}],1117:[function(require,module,exports){
 const faker = require('faker')
 const _ = require('lodash')
 
@@ -115479,6 +115488,25 @@ async function start(rootElemntName, dag_data, id) {
 module.exports = start
 
 },{"d3":58,"d3-dag":33,"faker":59,"lodash":1112}],1118:[function(require,module,exports){
+const cors = 'https://cors-anywhere.herokuapp.com/'
+const absoluteURLregex = /(?:^[a-z][a-z0-9+.-]*:|\/\/)/
+
+module.exports = getURL
+
+function getURL (url) {
+  const isAbsoluteURL = absoluteURLregex.test(url)
+  if (isAbsoluteURL) {
+    const islocalhost = (url.includes('//localhost')
+    || url.includes('//127.0.0.1') || url.includes('//0.0.0.0')
+    || url.includes('//10.0.0') || url.includes('//192.168'))
+    const sameorigin = new URL(url).origin === location.origin
+    return (islocalhost || sameorigin) ? url : cors + url
+  }
+  return url  
+}
+
+},{}],1119:[function(require,module,exports){
+const getURL = require('_get-url')
 /******************************************************************************
   INTERFACE
 ******************************************************************************/
@@ -115503,10 +115531,9 @@ function makeSVGicon (svgURL, callback) {
     const faviconURL = canvas.toDataURL()
     callback(null, faviconURL)
   }
-  var cors = 'https://cors-anywhere.herokuapp.com/'
   img.onerror = event => callback(event)
   img.setAttribute('crossOrigin', 'anonymous')
-  img.setAttribute('src', cors + svgURL)
+  img.setAttribute('src', getURL(svgURL))
 }
 function setFavicon (faviconURL) {
   const favicon =  (favicon => {
@@ -115552,7 +115579,7 @@ const drawTriangles = (ctx, dim) => {
   }
 }
 
-},{}],1119:[function(require,module,exports){
+},{"_get-url":1118}],1120:[function(require,module,exports){
 
 module.exports = crawlworkshop
 
@@ -115591,7 +115618,7 @@ async function crawlworkshop (data, href) {
   }
 }
 
-},{}],1120:[function(require,module,exports){
+},{}],1121:[function(require,module,exports){
 const skilltree = require('skilltree.js')
 const crawl = require('crawl-workshop')
 const bel = require('bel')
@@ -115613,12 +115640,13 @@ const css = csjs`
   width: 100%;
 }`
 
-},{"bel":3,"crawl-workshop":1119,"csjs-inject":9,"skilltree.js":1117}],1121:[function(require,module,exports){
+},{"bel":3,"crawl-workshop":1120,"csjs-inject":9,"skilltree.js":1117}],1122:[function(require,module,exports){
 const csjs = require('csjs-inject')
 const bel = require('bel') // @TODO: replace with `elb`
 const belmark = require('belmark') // @TODO: replace with `elbmark`
 const skilltree = require('skilltrees')
 
+const getURL = require('_get-url')
 const svg2favicon = require('_svg2favicon')
 
 const CONFIG = default_config()
@@ -115902,12 +115930,12 @@ async function _workshopping ({ config, theme, css }) {
 }
 
 function styles (font_url, theme) {
-  var FONT = font_url.split('/').join('-').split('.').join('_')
+  var FONT = font_url.split('/').join('-').split('.').join('-').split(':').join('-').split('?').join('-').split('=').join('-')
   var font = bel`
     <style>
     @font-face {
       font-family: ${FONT};
-      ${FONT !== font_url ? `src: url('${font_url}');` : ''}
+      ${FONT !== font_url ? `src: url('${getURL(font_url)}');` : ''}
     }
     </style>`
   document.head.appendChild(font)
@@ -116264,4 +116292,4 @@ function default_css () {
   return Object.freeze({ css: '@TODO: make available' })
 }
 
-},{"_svg2favicon":1118,"bel":3,"belmark":5,"csjs-inject":9,"skilltrees":1120}]},{},[1]);
+},{"_get-url":1118,"_svg2favicon":1119,"bel":3,"belmark":5,"csjs-inject":9,"skilltrees":1121}]},{},[1]);
