@@ -1,48 +1,36 @@
 {
-  "title": "Blockchain bootcamp - Ethereum Focused",
+  "title": "Blockchain bootcamp - Smart Contracts, Storage and Oracles",
   "icon": "https://chainsafe.io/assets/images/ChainSafe_logo.png",
   "chat": "https://gitter.im/wizardamigosinstitute/program/~embed",
   "lessons": [
   {
-    "title": "Ethereum overview",
-    "lesson": "src/lessons/ethereum.pdf",
+    "title": "Smart contracts - memory and storage",
+    "lesson": "src/lessons/memory.pdf",
     "info": "src/info/main.md"
   }, {
-    "title": "Differences between Bitcoin and Ethereum",
-    "lesson": "src/lessons/bitcoin-ethereum.pdf",
+    "title": "Reference types",
+    "lesson": "src/lessons/reference-types.pdf",
     "info": "src/info/main.md"
   }, {
-    "title": "Ethereum Accounts",
-    "lesson": "src/lessons/ethereum-accounts.pdf",
+    "title": "Decentralized data storage",
+    "lesson": "src/lessons/storage.pdf",
     "info": "src/info/main.md"
   }, {
-    "title": "Mining",
-    "lesson": "src/lessons/mining.pdf",
+    "title": "Smart contract oracles",
+    "lesson": "src/lessons/oracles.pdf",
     "info": "src/info/main.md"
   }, {
-    "title": "Ethereum Networks",
-    "lesson": "src/lessons/networks.pdf",
-    "info": "src/info/main.md"
-  }, {
-    "title": "Ethereum Virtual Machine Basics",
-    "lesson": "src/lessons/evm.pdf",
-    "info": "src/info/main.md"
-  }, {
-    "title": "Data Storage",
-    "lesson": "src/lessons/data-storage.pdf",
-    "info": "src/info/main.md"
-  }, {
-    "title": "Consensus",
-    "lesson": "src/lessons/consensus.pdf",
-    "info": "src/info/main.md"
+    "title": "Oraclize it",
+    "lesson": "https://www.youtube.com/embed/RaMafN2YsnU",
+    "info": "src/info/oraclize-it.md"
   }
  ],
   "needs": [
-    "https://ninabreznik.github.io/play-workshop-chainsafe-blockchainbootcamp-introduction/"
-  ],
-  "unlocks": [
-    "https://ninabreznik.github.io/play-workshop-remix/",
+    "https://ninabreznik.github.io/play-workshop-chainsafe-blockchainbootcamp-introduction/",
     "https://ninabreznik.github.io/play-workshop-chainsafe-blockchainbootcamp-introduction-to-solidity/",
     "https://play.ethereum.org/workshop-solidity/"
+  ],
+  "unlocks": [
+    "https://ninabreznik.github.io/play-workshop-remix/"
   ]
 }
