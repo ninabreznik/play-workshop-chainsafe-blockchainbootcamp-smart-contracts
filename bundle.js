@@ -115580,45 +115580,60 @@ const drawTriangles = (ctx, dim) => {
 }
 
 },{"_get-url":1118}],1120:[function(require,module,exports){
+const get_url = require('_get-url')
 
 module.exports = crawlworkshop
 
 async function crawlworkshop (data, href) {
+  // @TODO: cache workshop data to not fetch it over and over again
+  // @TODO: add robust error handling - e.g. if links are broken
   if (href) {
-    const needs = data.needs.map((x, i) => {
+    const needs = []
+    const unlocks = []
+    for (var i = 0, len = data.needs.length; i < len; i++) {
+      var x = data.needs[i]
       x = x.split('?')[0]
       if (!x.includes('://')) x = 'https://' + x
       if (!x.endsWith('.html') && !x.endsWith('/')) x = x + '/'
-      return {
-        url: new URL('./workshop.json', x).href,
+      var workshop_url = get_url(new URL('./workshop.json', x).href)
+      var workshop = await fetch(workshop_url).then(x => x.json())
+      needs.push({
+        url: new URL(x).href,
         parentIds: [],
-        id: `needs_${i + 1}`, // @TODO: make something unique, like `href + i`?
-        title: `foobar_${i + 1}` // @TODO: fetch from workshop.json
-      }
-    })
-    const unlocks = data.unlocks.map((x, i) => {
+        id: workshop_url,
+        title: workshop.title,
+        icon: get_url(workshop.icon)
+      })
+    }
+    for (var i = 0, len = data.unlocks.length; i < len; i++) {
+      var x = data.unlocks[i]
       x = x.split('?')[0]
       if (!x.includes('://')) x = 'https://' + x
       if (!x.endsWith('.html') && !x.endsWith('/')) x = x + '/'
-      return {
-        url: new URL('./workshop.json', x).href,
-        parentIds: ['0'],
-        id: `unlocks_${i + 1}`, // @TODO: make something unique, like `href + i`?
-        title: `barbaz_${i + 1}` // @TODO: fetch from workshop.json
-      }
-    })
+      var url = new URL(x).href
+      var workshop_url = get_url(new URL('./workshop.json', url).href)
+      var workshop = await fetch(workshop_url).then(x => x.json())
+      unlocks.push({
+        url: url,
+        parentIds: [location.href],
+        id: url,
+        title: workshop.title,
+        icon: get_url(workshop.icon)
+      })
+    }
     return [{
       url: href,
       parentIds: [...needs].map(x => x.id),
+      id: location.href,
       title: data.title,
-      id: '0'
+      icon: get_url(data.icon)
     }, ...needs, ...unlocks]
   } else {
     throw new Error('@TODO: implement "infinite crawling"')
   }
 }
 
-},{}],1121:[function(require,module,exports){
+},{"_get-url":1118}],1121:[function(require,module,exports){
 const skilltree = require('skilltree.js')
 const crawl = require('crawl-workshop')
 const bel = require('bel')
