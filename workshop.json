@@ -26,7 +26,7 @@
   }
  ],
   "needs": [
-    "https://ninabreznik.github.io/play-workshop-chainsafe-blockchainbootcamp-ethereum-focused/"
+    "https://ninabreznik.github.io/play-workshop-chainsafe-blockchainbootcamp-introduction-to-solidity/"
   ],
   "unlocks": [
   ]
